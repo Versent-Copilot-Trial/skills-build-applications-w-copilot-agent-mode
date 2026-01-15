@@ -23,20 +23,23 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
+
 class Activity(models.Model):
     _id = models.ObjectIdField(primary_key=True, default=ObjectId)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activities')
-    activity_type = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
     duration = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'activities'
 
+
 class Workout(models.Model):
     _id = models.ObjectIdField(primary_key=True, default=ObjectId)
     name = models.CharField(max_length=100)
     description = models.TextField()
+    users = models.ManyToManyField('User', related_name='workouts')
 
     class Meta:
         db_table = 'workouts'
